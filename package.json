@@ -1,0 +1,22 @@
+{
+  "name": "etcdump",
+  "version": "0.1.0",
+  "description": "Command line tool to dump and restore etcd keys.",
+  "main": "index.js",
+  "bin": {
+    "etcdump": "./bin/etcdump.js"
+  },
+  "author": "Nuxeo (http://www.nuxeo.com/)",
+  "licenses" : [{
+    "type": "Apache",
+    "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+  }],
+  "dependencies": {
+    "commander": "^2.2.0",
+    "node-etcd": "^2.1.1",
+    "q": "^1.0.1",
+    "qpatch": "0.0.8",
+    "sleep": "^1.1.8",
+    "underscore": "^1.6.0"
+  }
+}

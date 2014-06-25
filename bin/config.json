@@ -1,0 +1,12 @@
+{
+  "etcdHost": "localhost",
+  "etcdPort": 4001,
+  "dump": {
+    "keys": [
+      {
+        "key": "/",
+        "recursive": true
+      }
+    ]
+  }
+}

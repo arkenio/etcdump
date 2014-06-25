@@ -1,0 +1,57 @@
+#!/usr/bin/env node
+
+var pkg = require('../package.json');
+  program = require('commander'),
+  fs = require('fs'),
+  etcdump = require('../');
+
+program
+  .version(pkg.version)
+  .option('-c, --config [json_file]', 'Path to JSON config file', __dirname + '/config.json')
+  .option('-f, --file [json_file]', 'Path to JSON dump file', process.cwd() + '/etcdump.json')
+  .option('-v, --verbose', 'Verbose output', false)
+
+program
+  .command('dump')
+  .action(function() {
+    if (program.verbose) {
+      printConfiguration();
+    }
+
+    var config = require(program.config);
+
+    return etcdump.dump(config).then(function(keys) {
+      for (var i = 0, len = keys.length; i < len; i++) {
+        keys[i] = keys[i].value;
+      }
+      fs.writeFileSync(program.file, JSON.stringify(keys));
+    })
+    .done();
+  });
+
+program
+  .command('restore')
+  .action(function(){
+    if (program.verbose) {
+      printConfiguration();
+    }
+
+    var config = require(program.config);
+    var allKeys = require(program.file);
+
+    return etcdump.restore(config, allKeys).then(function() {
+      console.log('successfuly restored')
+    })
+    .done();
+  });
+
+program.parse(process.argv);
+
+function printConfiguration() {
+  console.log('Configuration');
+  console.log('  config file: ' + program.config);
+  console.log('  dump file: ' + program.file);
+}
+
+
+require("../index.js")
