@@ -7,6 +7,17 @@
     "etcdump": "./bin/etcdump"
   },
   "author": "Nuxeo (http://www.nuxeo.com/)",
+  "contributors": [
+    {
+      "name": "Thomas Roger",
+      "email": "troger@nuxeo.com"
+    }
+  ],
+  "homepage": "https://github.com/arkenio/etcdump",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/arkenio/etcdump.git"
+  },
   "licenses" : [{
     "type": "Apache",
     "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
