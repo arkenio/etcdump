@@ -44,26 +44,29 @@ function filterKeys(keyDef, keys) {
   });
 }
 
-
 function restore(config, allKeys) {
   etcd = new Etcd(config.etcdHost, config.etcdPort);
 
-  function restoreKeys(keys) {
-    var self = this;
-    return Q.all(_.each(keys, function(key) {
-      return etcd.set(key.key, key.value);
-    }));
-  }
-
-  var funcs = [];
-  allKeys.forEach(function(keys) {
-    if (!(keys instanceof Array)) {
-      keys = [keys];
+  return allKeys.reduce(function(a, b) {
+    //Flaten array
+    return a.concat(b);
+  })
+  .map(function(item) {
+    //Transform keys array into an array of promise
+    return  function(index) {
+      return etcd.set(item.key, item.value, {}).then(function() {
+        console.log("Restored " + item.key);
+      },
+      function(error) {
+        throw new Error("Error setting key : " + item.key);
+      }).delay(5)
     }
+  })
+  //Execute all promises in sequential order
+  .reduce(Q.when, Q())
 
-    funcs.push(function() { return restoreKeys(keys) });
-  });
-  return funcs.reduce(Q.when, Q());
+
+
 }
 
 module.exports = {
